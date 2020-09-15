@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class DoctorLoginActivity extends AppCompatActivity implements View.OnCli
     Button presshere, loginButton;
     CheckBox rememberMe;
     String s1,s2;
+    ProgressBar progressBar;
    /** String[] idString = new String[100];
     String[] passString = new String[100];
     String[] fnameString = new String[100];
@@ -54,6 +56,8 @@ public class DoctorLoginActivity extends AppCompatActivity implements View.OnCli
         presshere.setOnClickListener(this);
         loginButton.setOnClickListener(this);
 
+
+        progressBar=findViewById(R.id.progressBarID);
        // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         fAuth = FirebaseAuth.getInstance();
@@ -63,7 +67,7 @@ public class DoctorLoginActivity extends AppCompatActivity implements View.OnCli
                 MODE_APPEND);
          s1 = sh.getString("idGiven", "");
          s2 = sh.getString("passGiven", "");
-         Toast.makeText(getApplicationContext(),""+s1 +"\n"+s2 ,Toast.LENGTH_SHORT).show();
+      //   Toast.makeText(getApplicationContext(),""+s1 +"\n"+s2 ,Toast.LENGTH_SHORT).show();
         if(!s1.equals("") && !s2.equals(""))
         {
             autoLogin();
@@ -116,6 +120,7 @@ public class DoctorLoginActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intentDoctorSignin);
                 break;
             case R.id.loginButtonID:
+                progressBar.setVisibility( View.VISIBLE);
                 login = false;
                 final String idGiven = DoctorSignInEmail.getText().toString();
                 final String passGiven = DoctorSignInPassword.getText().toString();
@@ -131,6 +136,7 @@ public class DoctorLoginActivity extends AppCompatActivity implements View.OnCli
 
                             if(passwordFromDB.equals(passGiven))
                             {
+                                progressBar.setVisibility( View.GONE);
                                 DoctorSignInPassword.setError(null);
 
                                 String chamber = dataSnapshot.child(idGiven).child("chamber").getValue(String.class);
@@ -157,12 +163,14 @@ public class DoctorLoginActivity extends AppCompatActivity implements View.OnCli
                                 finish();
                             }
                             else{
-                                DoctorSignInPassword.setError("Wrong password");
+                                progressBar.setVisibility( View.GONE);
+                                DoctorSignInPassword.setError("Wrong password");progressBar.setVisibility( View.GONE);
                             }
                         }
 
                         else
                         {
+                            progressBar.setVisibility( View.GONE);
                             DoctorSignInEmail.setError("No ID");
 
                         }

@@ -72,6 +72,16 @@
                 android:textColor="@color/blue"
                 android:textSize="20dp"
                 />
+            <ProgressBar
+                android:id="@+id/progressBarID"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                />
             <Button
                 android:id="@+id/loginButtonID"
                 android:layout_width="300dp"

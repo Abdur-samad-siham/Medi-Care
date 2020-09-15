@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -78,6 +79,7 @@ boolean imageset = false;
       String gender;
      String pin = "";
     String pick="no";
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +89,7 @@ boolean imageset = false;
 
         mAuth = FirebaseAuth.getInstance();
 
+        progressBar=findViewById(R.id.progressBarID);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Patient");
 
@@ -145,6 +148,7 @@ boolean imageset = false;
             case R.id.patientSignUpButtonID :
             {
                 //Toast.makeText(getApplicationContext(),"Working",Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility( View.VISIBLE);
                 PatientRegistration();
                 //  Intent intentSignUpThekeSignIn=new Intent(getApplicationContext(),PatientSignIn.class);
                 //  startActivity(intentSignUpThekeSignIn);
@@ -173,12 +177,14 @@ boolean imageset = false;
         calling = "f";
 
         if (PatientSignUpEmail.isEmpty()) {
+            progressBar.setVisibility( View.GONE);
             patientSignUpEmail.setError("Enter an email address");
             patientSignUpEmail.requestFocus();
             return;
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(PatientSignUpEmail).matches()) {
+            progressBar.setVisibility( View.GONE);
             patientSignUpEmail.setError("Enter a valid email address");
             patientSignUpEmail.requestFocus();
             return;
@@ -186,16 +192,19 @@ boolean imageset = false;
 
         //checking the validity of the password
         if (PatientSignUpPassword.isEmpty()) {
+            progressBar.setVisibility( View.GONE);
             patientSignUpPassword.setError("Enter a password");
             patientSignUpPassword.requestFocus();
             return;
         }
         if (PatientSignUpPassword.length() < 6) {
+            progressBar.setVisibility( View.GONE);
             patientSignUpPassword.setError("Minimum length of password should be 6");
             patientSignUpPassword.requestFocus();
             return;
         }
         if (!imageset) {
+            progressBar.setVisibility( View.GONE);
             patientSignUpEmail.setError("Select a profile picture first");
             patientSignUpEmail.requestFocus();
             patientSignUpPassword.setError("Select a profile picture first");
